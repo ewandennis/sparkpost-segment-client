@@ -1,0 +1,23 @@
+{
+  "name": "sparkpost-segment-integration",
+  "version": "0.0.1",
+  "description": "SparkPost <-> Segment.com integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "author": "Ewan Dennis <ewan.dennis@messagesystems.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "analytics-node": "^1.2.2",
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "request": "^2.60.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "sinon": "^1.15.4",
+    "supertest": "^1.0.1"
+  }
+}
