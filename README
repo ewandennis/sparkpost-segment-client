@@ -6,6 +6,6 @@ Goal: Expose webhook / segment bridge capability to SP users
 Mechanism: small HTTP service
 
 *Prerequisite: event generating traffic
-!!*Prerequisite: SP account: cloudygoo 
+!!*Prerequisite: SP account 
 >>>Prerequisite: momentum demo instance
-*Prerequisite: segment account: ewan.dennis@gmail.com
+*Prerequisite: segment account
