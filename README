@@ -3,9 +3,24 @@ SP -> Segment Integration
 Goal: Push SP webhook events into Segment
 Goal: Expose webhook / segment bridge capability to SP users
 
+Constraint: email address is unique identifier
+Constraint: service intended for single tenant senders
+
 Mechanism: small HTTP service
 
-*Prerequisite: event generating traffic
-!!*Prerequisite: SP account 
+Email address harvesting
+	on delivery: map msg id -> rcpt addr
+	other events: retrieve rcpt addr using msg id
+
+Event mapping
+	delivery -> identify?, track('Email Delivered')
+	bounce -> identify?, track('Email Bounced')
+	out_of_band -> identify?, track('Email Bounced')
+	feedback -> identify?, track('Email Marked as Spam')
+	open -> identify?, track('Email Opened')
+	click -> identify?, track('Email Clicked')
+
+*Prerequisite: SP event generating traffic
+!!*Prerequisite: SP account
 >>>Prerequisite: momentum demo instance
 *Prerequisite: segment account

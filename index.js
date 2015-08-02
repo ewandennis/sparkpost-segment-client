@@ -1,4 +1,4 @@
-var appLib = require('./lib/app');
+var appLib = require('./lib/app').App;
 var segment = require('analytics-node');
 
 // ewan-dennis/spplaytime
