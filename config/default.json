@@ -1,0 +1,29 @@
+{
+	"app": {
+		"port": 3000,
+		"maxJSONPayloadSize": "250mb"
+	},
+	"logging": {
+		"level": "info"
+	},
+	"segmentAPI": {
+		"apiKey": "",
+		"opts": {
+			"flushAt": 1
+		}
+	},
+	"sparkPost": {
+		"eventClasses": ["message_event", "track_event"],
+		"eventTypes": ["reception", "delivery", "inband", "out_of_band", "feedback", "open", "click"],
+		"fbEventTypes": ["abuse"],
+		"importantFields": ["rcpt_to", "rcpt_meta", "tags"],
+		"segmentEventTypeMap": {
+		  "delivery": "Email Delivered",
+		  "inband": "Email Bounced",
+		  "out_of_band": "Email Bounced",
+		  "feedback": "Email Marked as Spam",
+		  "open": "Email Opened",
+		  "click": "Email Link Clicked"
+		}
+	}
+}

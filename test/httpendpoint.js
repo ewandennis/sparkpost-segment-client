@@ -99,17 +99,24 @@ function testCleanup(next) {
 beforeEach('Start new webhook endpoint service', testPrep);
 afterEach('Shutdown webhook endpoint service', testCleanup);
 
-describe.skip('SparkPost webhook endpoint', function () {
-  it('accepts JSON POST requests', function (done) {
+describe('SparkPost webhook endpoint', function () {
+  it('/inbound accepts JSON POST requests', function (done) {
     callInboundEndpoint(TEST_EVENTS_1, function (resp) {
       expect(resp.statusCode).to.equal(200);
+      done();
+    });
+  });
+
+  it('returns 404 for other endpoints', function(done) {
+    request('http://localhost:3000/jimbojumbochops').on('response', function(resp) {
+      expect(resp.statusCode).to.equal(404);
       done();
     });
   });
 });
 
 describe('Segment.com client', function () {
-  it.skip('makes 1 segment.identify call per inbound email address', function (done) {
+  it('makes 1 segment.identify call per inbound email address', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, 'reception', function (resp) {
       cxt.app.flushSegmentCache(function () {
         cxt.segmentStub.identify.should.have.callCount(1);
@@ -230,7 +237,7 @@ describe('Segment.com client', function () {
 
   it('ignores unexpected event types in requests', function (done) {
     var badbatch = _.cloneDeep(TEST_EVENTS_1);
-    appUtils.unpackSPEvent(badbatch[0]).type = 'binglefloop';
+    appUtils.unpackEvent(badbatch[0]).type = 'binglefloop';
     callInboundEndpoint(badbatch, function (resp) {
       expect(resp.statusCode).to.equal(200);
       done();

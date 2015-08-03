@@ -4,15 +4,17 @@
   "description": "SparkPost webhook -> Segment.com client",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "dev": "node index.js"
+    "test": "NODE_ENV=test mocha",
+    "dev": "NODE_ENV=dev node index.js",
+    "start": "NODE_ENV=production node index.js"
   },
   "repository": "https://github.com/ewandennis/sparkpost-segment-client.git",
   "author": "Ewan Dennis <ewan.dennis@messagesystems.com>",
-  "license": "UNLICENSED",
+  "license": "Apache 2.0",
   "dependencies": {
     "analytics-node": "^1.2.2",
     "body-parser": "^1.13.2",
+    "config": "^1.15.0",
     "express": "^4.13.1",
     "lodash": "^3.10.0",
     "request": "^2.60.0",
