@@ -61,7 +61,7 @@ describe('applib', function() {
 	})
 
 	describe('#augmentSPEvents', function () {
-		it('should add rcpt_to fields to events based on their message_ids');
+		it('should add rcpt_to, rcpt_meta and tags fields to events based on their message_ids');
 	});
 
 	describe('#formatSPMetadataForSegment', function () {
@@ -96,17 +96,35 @@ describe('applib', function() {
 			var inevents = [
 				{
 					rcpt_to: 'jim@jiminy.com',
+					rcpt_meta: {
+						'food': 'ice cream',
+						'funds': 'negligable'
+					},
+					tags: ['vanilla', 'low value'],
 					message_id: '111-1111-11111111-11111-111'
 				},
 				{
 					rcpt_to: 'bob@bobby.com',
+					rcpt_meta: {
+						'food': 'muffins',
+						'funds': 'copious'
+					},
+					tags: ['choc chip', 'premium'],
 					message_id: '222-2222-22222222-22222-222'
 				}
 			];
 
 			var expectation = {};
-			expectation[inevents[0].message_id] = inevents[0].rcpt_to;
-			expectation[inevents[1].message_id] = inevents[1].rcpt_to;
+			expectation[inevents[0].message_id] = {
+				rcpt_to: inevents[0].rcpt_to,
+				rcpt_meta: inevents[0].rcpt_meta,
+				tags: inevents[0].tags
+			};
+			expectation[inevents[1].message_id] = {
+				rcpt_to: inevents[1].rcpt_to,
+				rcpt_meta: inevents[1].rcpt_meta,
+				tags: inevents[1].tags
+			}
 
 			var msgidmap = apputils.mkMessageIdMap(inevents);
 			expect(msgidmap).to.deep.equal(expectation);

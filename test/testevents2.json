@@ -1,0 +1,120 @@
+[
+  {
+    "msys": {
+      "message_event": {
+        "type": "reception",
+        "timestamp": "1436179204",
+        "recv_method": "rest",
+        "msg_spoolname": "A8/00-27037-40B5A955",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "rcpt_tags": [],
+        "conn_stage": "22",
+        "pathway_group": "default",
+        "rcpt_to": "bniWRec@aol.com",
+        "transmission_id": "12047540929167373",
+        "message_id": "0000045b9a559d698a00",
+        "msg_batchname": "68/00-27037-40B5A955",
+        "pathway": "default",
+        "binding": "default",
+        "customer_id": "1",
+        "routing_domain": "aol.com",
+        "conn_name": "00/00-00000-00000000",
+        "binding_group": "default",
+        "msg_size": "751",
+        "msg_from": "kookaburra-demo@messagesystems.com",
+        "rcpt_meta": {},
+        "campaign_id": "KookaburraTransactional"
+      }
+    }
+  },
+  {
+    "msys": {
+      "message_event": {
+        "ip_address": "172.31.39.220",
+        "conn_name": "00/00-00000-00000000",
+        "msg_size": "751",
+        "timestamp": "1436179204",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "campaign_id": "KookaburraTransactional",
+        "error_code": "421",
+        "rcpt_tags": [],
+        "reason": "421 4.7.1 : (CON:B1) http://postmaster.info.aol.com/errors/{base64}",
+        "routing_domain": "aol.com",
+        "conn_stage": "9",
+        "binding": "default",
+        "type": "tempfail",
+        "bounce_class": "50",
+        "queue_time": "17",
+        "rcpt_meta": {},
+        "message_id": "0000045b9a559d698a00",
+        "recv_method": "rest",
+        "customer_id": "1",
+        "transmission_id": "12047540929167373",
+        "msg_spoolname": "A8/00-27037-40B5A955",
+        "msg_batchname": "68/00-27037-40B5A955",
+        "num_retries": "0",
+        "binding_group": "default"
+      }
+    }
+  },
+  {
+    "msys": {
+      "message_event": {
+        "bounce_class": "50",
+        "customer_id": "1",
+        "message_id": "0000045b9a559d698a00",
+        "type": "tempfail",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "conn_name": "00/00-00000-00000000",
+        "msg_batchname": "68/00-27037-40B5A955",
+        "num_retries": "1",
+        "campaign_id": "KookaburraTransactional",
+        "rcpt_meta": {},
+        "msg_size": "751",
+        "timestamp": "1436180409",
+        "rcpt_tags": [],
+        "recv_method": "rest",
+        "transmission_id": "12047540929167373",
+        "error_code": "421",
+        "reason": "421 4.7.1 : (CON:B1) http://postmaster.info.aol.com/errors/{base64}",
+        "msg_spoolname": "A8/00-27037-40B5A955",
+        "queue_time": "1204894",
+        "conn_stage": "9",
+        "binding": "default",
+        "ip_address": "172.31.39.220",
+        "routing_domain": "aol.com",
+        "binding_group": "default"
+      }
+    }
+  },
+  {
+    "msys": {
+      "message_event": {
+        "timestamp": "1436182809",
+        "conn_name": "00/00-00000-00000000",
+        "rcpt_to": "bniWRec@aol.com",
+        "msg_size": "751",
+        "customer_id": "1",
+        "transmission_id": "12047540929167373",
+        "msg_spoolname": "A8/00-27037-40B5A955",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "routing_domain": "aol.com",
+        "recv_method": "rest",
+        "msg_from": "kookaburra-demo@messagesystems.com",
+        "conn_stage": "9",
+        "rcpt_tags": [],
+        "bounce_class": "50",
+        "msg_batchname": "68/00-27037-40B5A955",
+        "binding": "default",
+        "error_code": "554",
+        "campaign_id": "KookaburraTransactional",
+        "rcpt_meta": {},
+        "type": "inband",
+        "message_id": "0000045b9a559d698a00",
+        "ip_address": "172.31.39.220",
+        "reason": "554 5.7.1 : (RTR:BB) http://postmaster.info.aol.com/errors/554rtrbb.html",
+        "binding_group": "default"
+      }
+    }
+  }
+]

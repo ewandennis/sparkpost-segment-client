@@ -1,0 +1,94 @@
+[
+  {
+    "msys": {
+      "message_event": {
+        "pathway": "default",
+        "customer_id": "1",
+        "rcpt_to": "rXQVrqA@gmail.com",
+        "msg_from": "kookaburra-demo@messagesystems.com",
+        "rcpt_tags": [],
+        "timestamp": "1436179143",
+        "binding": "default",
+        "msg_spoolname": "90/00-27037-7CA5A955",
+        "routing_domain": "gmail.com",
+        "type": "reception",
+        "conn_stage": "22",
+        "transmission_id": "12047540929167361",
+        "msg_batchname": "40/00-27037-7CA5A955",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "campaign_id": "KookaburraTransactional",
+        "conn_name": "00/00-00000-00000000",
+        "recv_method": "rest",
+        "rcpt_meta": {},
+        "message_id": "0000c75a9a559d690900",
+        "binding_group": "default",
+        "msg_size": "754",
+        "pathway_group": "default"
+      }
+    }
+  },
+  {
+    "msys": {
+      "track_event": {
+        "timestamp": "1436179143",
+        "template_id": "template_12047540929167361",
+        "template_version": "0",
+        "customer_id": "1",
+        "rcpt_tags": [],
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "rcpt_meta": {},
+        "campaign_id": "KookaburraTransactional",
+        "message_id": "0000c75a9a559d690900",
+        "transmission_id": "12047540929167361",
+        "type": "open",
+        "delv_method": "esmtp"
+      }
+    }
+  },
+  {
+    "msys": {
+      "track_event": {
+        "target_link_url": "http://www.messagesystems.com/",
+        "campaign_id": "KookaburraTransactional",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "template_version": "0",
+        "rcpt_tags": [],
+        "type": "click",
+        "delv_method": "esmtp",
+        "transmission_id": "12047540929167361",
+        "timestamp": "1436179143",
+        "template_id": "template_12047540929167361",
+        "customer_id": "1",
+        "message_id": "0000c75a9a559d690900"
+      }
+    }
+  },
+  {
+    "msys": {
+      "message_event": {
+        "timestamp": "1436179143",
+        "customer_id": "1",
+        "node_name": "ip-172-31-22-238.eu-west-1.compute.internal",
+        "num_retries": "0",
+        "rcpt_meta": {},
+        "msg_spoolname": "90/00-27037-7CA5A955",
+        "msg_size": "754",
+        "queue_time": "67",
+        "routing_domain": "gmail.com",
+        "type": "delivery",
+        "msg_batchname": "40/00-27037-7CA5A955",
+        "ip_address": "172.31.39.220",
+        "binding": "default",
+        "conn_stage": "1",
+        "binding_group": "default",
+        "transmission_id": "12047540929167361",
+        "delv_method": "esmtp",
+        "message_id": "0000c75a9a559d690900",
+        "recv_method": "rest",
+        "rcpt_tags": [],
+        "campaign_id": "KookaburraTransactional",
+        "conn_name": "00/00-00000-00000000"
+      }
+    }
+  }
+]
