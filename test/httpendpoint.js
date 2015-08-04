@@ -137,46 +137,51 @@ describe('Segment.com client', function () {
 
   it('makes 1 segment.track("Email Bounced") call for each received inband bounce event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_2, ['reception', 'inband'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(1);
-      expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(1);
+        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
+        done();
+      });
     });
   });
 
   it.skip('makes 1 segment.track("Email Bounced") call for each received out_of_band event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_2, ['reception', 'delivery', 'out_of_band'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(2);
-      expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(2);
+        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
+        done();
+      });
     });
   });
 
   it.skip('makes 1 segment.track("Email Marked as Spam") call for each received feedback/abuse event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'feedback'], function (resp) {
       cxt.segmentStub.track.should.have.callCount(2);
-      expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Marked as Spam'}));
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Marked as Spam'}));
+        done();
+      });
     });
   });
 
   it('makes 1 segment.track("Email Opened") call for each received open event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'open'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(2);
-      expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Opened'}));
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(2);
+        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Opened'}));
+        done();
+      });
     });
   });
 
   it('makes 1 segment.track("Email Link Clicked") call for each received click event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'open', 'click'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(3);
-      expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Link Clicked'}));
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(3);
+        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Link Clicked'}));
+        done();
+      });
     });
   });
 
@@ -198,17 +203,19 @@ describe('Segment.com client', function () {
 
   it('drops open events whose message_ids do not have cached rcpt_tos', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['open'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(0);
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(0);
+        done();
+      });
     });
   });
 
   it('drops click events whose message_ids do not have cached rcpt_tos', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['click'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(0);
-      cxt.app.flushSegmentCache();
-      done();
+      cxt.app.flushSegmentCache(function () {
+        cxt.segmentStub.track.should.have.callCount(0);
+        done();
+      });
     });
   });
 
