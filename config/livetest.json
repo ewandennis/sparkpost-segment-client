@@ -1,0 +1,11 @@
+{
+  "logging": {
+    "level": "debug"
+  },
+
+	"segmentAPI": {
+		"key": "lWium4ksh4OkAah8AhB8rbYgL08z5xvV",
+		"opts": {
+		}
+	}
+}

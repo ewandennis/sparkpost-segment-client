@@ -5,6 +5,11 @@ var sinonChai = require('sinon-chai');
 var request = require('request');
 var _ = require('lodash');
 
+var segmentLib = require('analytics-node');
+
+process.env.NODE_CONFIG_DIR = '..';
+var config = require('config');
+
 var appModule = require('../lib/app.js');
 var appLib = appModule.App;
 var appUtils = appModule.utils;
@@ -12,6 +17,7 @@ var rcptcacheLib = require('../lib/rcptcache');
 
 chai.should();
 chai.use(sinonChai);
+var assert = chai.assert;
 
 var expect = chai.expect;
 
@@ -27,21 +33,29 @@ var cxt;
 
 function TestContext() {
   return {
-    segmentStub: null,
+    segmentClient: null,
     rcptcache: null,
     app: null,
     server: null,
 
     start: function(app, next) {
-      this.segmentStub = {
-        identify: sinon.spy(),
-        track: sinon.spy(),
-        flush: sinon.spy(function (next) {
-          process.nextTick(next);
-        })
-      };
+      if (process.env.NODE_ENV == 'livetest') {
+        console.log("*** LIVE TEST MODE ***");
+        this.segmentClient = new segmentLib(config.get('segmentAPI.key'), config.get('segmentAPI.opts'));
+        sinon.spy(this.segmentClient, 'identify');
+        sinon.spy(this.segmentClient, 'track');
+      } else {
+        this.segmentClient = {
+          identify: sinon.spy(),
+          track: sinon.spy(),
+          flush: sinon.spy(function (next) {
+            process.nextTick(next);
+          })
+        };
+      }
+
       this.rcptcache = new rcptcacheLib();
-      this.app = new appLib(this.rcptcache, this.segmentStub);
+      this.app = new appLib(this.rcptcache, this.segmentClient);
       this.server = this.app.listen(3000, next);
     },
 
@@ -118,8 +132,9 @@ describe('SparkPost webhook endpoint', function () {
 describe('Segment.com client', function () {
   it('makes 1 segment.identify call per inbound email address', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, 'reception', function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.identify.should.have.callCount(1);
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.identify.should.have.callCount(1);
         done();
       });
     });
@@ -127,9 +142,10 @@ describe('Segment.com client', function () {
 
   it('makes 1 segment.track("Email Delivered") call for each received delivery event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery'], function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(1);
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Delivered'}));
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.track.should.have.callCount(1);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Delivered'}));
         done();
       });
     });
@@ -137,9 +153,10 @@ describe('Segment.com client', function () {
 
   it('makes 1 segment.track("Email Bounced") call for each received inband bounce event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_2, ['reception', 'inband'], function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(1);
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.track.should.have.callCount(1);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
         done();
       });
     });
@@ -147,9 +164,10 @@ describe('Segment.com client', function () {
 
   it.skip('makes 1 segment.track("Email Bounced") call for each received out_of_band event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_2, ['reception', 'delivery', 'out_of_band'], function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(2);
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.track.should.have.callCount(2);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
         done();
       });
     });
@@ -157,9 +175,10 @@ describe('Segment.com client', function () {
 
   it.skip('makes 1 segment.track("Email Marked as Spam") call for each received feedback/abuse event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'feedback'], function (resp) {
-      cxt.segmentStub.track.should.have.callCount(2);
-      cxt.app.flushSegmentCache(function () {
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Marked as Spam'}));
+      cxt.segmentClient.track.should.have.callCount(2);
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Marked as Spam'}));
         done();
       });
     });
@@ -167,9 +186,10 @@ describe('Segment.com client', function () {
 
   it('makes 1 segment.track("Email Opened") call for each received open event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'open'], function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(2);
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Opened'}));
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.track.should.have.callCount(2);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Opened'}));
         done();
       });
     });
@@ -177,9 +197,10 @@ describe('Segment.com client', function () {
 
   it('makes 1 segment.track("Email Link Clicked") call for each received click event', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['reception', 'delivery', 'open', 'click'], function (resp) {
-      cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(3);
-        expect(cxt.segmentStub.track).to.be.calledWith(sinon.match({event: 'Email Link Clicked'}));
+      cxt.app.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        cxt.segmentClient.track.should.have.callCount(3);
+        expect(cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Link Clicked'}));
         done();
       });
     });
@@ -196,7 +217,7 @@ describe('Segment.com client', function () {
     }
 
     callInboundEndpoint([evt], function (resp) {
-      expect(cxt.segmentStub.track.callCount).to.equal(0);
+      expect(cxt.segmentClient.track.callCount).to.equal(0);
       done();
     });
   });
@@ -204,7 +225,7 @@ describe('Segment.com client', function () {
   it('drops open events whose message_ids do not have cached rcpt_tos', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['open'], function (resp) {
       cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(0);
+        cxt.segmentClient.track.should.have.callCount(0);
         done();
       });
     });
@@ -213,7 +234,7 @@ describe('Segment.com client', function () {
   it('drops click events whose message_ids do not have cached rcpt_tos', function (done) {
     testResponseToEventTypes(TEST_EVENTS_1, ['click'], function (resp) {
       cxt.app.flushSegmentCache(function () {
-        cxt.segmentStub.track.should.have.callCount(0);
+        cxt.segmentClient.track.should.have.callCount(0);
         done();
       });
     });
