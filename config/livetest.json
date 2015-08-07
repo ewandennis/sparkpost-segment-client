@@ -1,11 +1,12 @@
 {
   "logging": {
-    "level": "debug"
+    "level": "info"
   },
 
 	"segmentAPI": {
 		"key": "lWium4ksh4OkAah8AhB8rbYgL08z5xvV",
 		"opts": {
+      "flushAt": 1
 		}
 	}
 }
