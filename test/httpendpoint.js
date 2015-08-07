@@ -141,9 +141,20 @@ describe('SparkPost webhook endpoint', function () {
     });
   });
 
-  it('returns 404 for other endpoints', function(done) {
+  it('returns 404 for other endpoints', function (done) {
     request('http://localhost:3000/jimbojumbochops').on('response', function(resp) {
       expect(resp.statusCode).to.equal(404);
+      done();
+    });
+  });
+
+  it('quietly accepts a webhook ping request', function (done) {
+    request({
+      uri: 'http://localhost:3000/api/v1/events',
+      method: 'POST',
+      json: {msys:{}}
+    }).on('response', function (resp) {
+      expect(resp.statusCode).to.equal(200);
       done();
     });
   });
