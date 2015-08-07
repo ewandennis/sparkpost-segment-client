@@ -7,7 +7,7 @@
     "test": "NODE_ENV=test mocha",
     "livetest": "NODE_ENV=livetest mocha",
     "dev": "NODE_ENV=dev node index.js",
-    "start": "NODE_ENV=production node index.js"
+    "prod": "NODE_ENV=production node index.js"
   },
   "repository": "https://github.com/ewandennis/sparkpost-segment-client.git",
   "author": "Ewan Dennis <ewan.dennis@messagesystems.com>",
@@ -18,6 +18,7 @@
     "config": "^1.15.0",
     "express": "^4.13.1",
     "lodash": "^3.10.0",
+    "morgan": "^1.6.1",
     "request": "^2.60.0",
     "winston": "^1.0.1"
   },
