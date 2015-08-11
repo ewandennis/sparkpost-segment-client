@@ -1,19 +1,19 @@
 var chai = require('chai');
 var sinon = require('sinon');
 var sinonChai = require('sinon-chai');
-
 var request = require('request');
+var winston = require('winston');
 var _ = require('lodash');
 
 var segmentLib = require('analytics-node');
 
-process.env.NODE_CONFIG_DIR = '..';
 var config = require('config');
 
-var appModule = require('../lib/app.js');
-var appLib = appModule.App;
-var appUtils = appModule.utils;
-var rcptcacheLib = require('../lib/rcptcache');
+var App = require('../lib/app');
+var SPEventFilter = require('../lib/spevents');
+var RcptCache = require('../lib/rcptcache');
+var Transform = require('../lib/transform');
+var Load = require('../lib/load');
 
 chai.should();
 chai.use(sinonChai);
@@ -31,11 +31,6 @@ var TEST_EVENTS_2 = require('./testevents2.json');
 
 function TestContext() {
   return {
-    segmentClient: null,
-    rcptcache: null,
-    app: null,
-    server: null,
-
     start: function(app, next) {
       if (process.env.NODE_ENV == 'livetest') {
         this.segmentClient = new segmentLib(config.get('segmentAPI.key'), config.get('segmentAPI.opts'));
@@ -61,8 +56,18 @@ function TestContext() {
         };
       }
 
-      this.rcptcache = new rcptcacheLib();
-      this.app = new appLib(this.rcptcache, this.segmentClient);
+      this.rcptcache = new RcptCache();
+      this.spEventFilter = new SPEventFilter(config);
+      var transform = new Transform(this.rcptcache, this.spEventFilter, config, winston);
+      this.load = new Load(this.segmentClient, this.spEventFilter, config, winston);
+
+      this.app = new App(
+        transform.transform.bind(transform),
+        this.load.load.bind(this.load),
+        this.rcptcache,
+        config,
+        winston);
+
       this.server = this.app.listen(3000, next);
     },
 
@@ -104,7 +109,7 @@ function TestContext() {
       }
 
       self.callInboundEndpoint(events, function (resp) {
-        self.app.flushSegmentCache(function (err, batch) {
+        self.load.flushSegmentCache(function (err, batch) {
           assert(err == null, 'Segment.flush failed: ' + err);
           next(resp, err, batch);
         });
@@ -234,7 +239,7 @@ describe('Segment.com client', function () {
     }
 
     self.cxt.callInboundEndpoint([evt], function (resp) {
-      self.cxt.app.flushSegmentCache(function (err, batch) {
+      self.cxt.load.flushSegmentCache(function (err, batch) {
         self.cxt.segmentClient.identify.should.have.callCount(0);
         self.cxt.segmentClient.track.should.have.callCount(0);
         done();
@@ -285,7 +290,7 @@ describe('Segment.com client', function () {
 
   it('ignores unexpected event types in requests', function (done) {
     var badbatch = _.cloneDeep(TEST_EVENTS_1);
-    appUtils.unpackEvent(badbatch[0]).type = 'binglefloop';
+    this.cxt.spEventFilter.unpackEvent(badbatch[0], config.get('sparkPost.eventClasses')).type = 'binglefloop';
     this.cxt.callInboundEndpoint(badbatch, function (resp) {
       expect(resp.statusCode).to.equal(200);
       done();

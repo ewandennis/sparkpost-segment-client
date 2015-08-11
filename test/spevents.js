@@ -1,23 +1,25 @@
 var chai = require('chai');
 var sinon = require('sinon');
 var sinonChai = require('sinon-chai');
+var config = require('config');
 
 var expect = chai.expect;
 chai.config.includeStack = true;
 
-var appLib = require('../lib/app');
+var SPEventFilter = require('../lib/spevents');
 
 var testevents = require('../testevents.json');
 
-before('Load app config', function() {
-	appLib.loadConfig();
-})
+beforeEach('Initialise SPEventFilter instance', function () {
+	this.spevents = new SPEventFilter(config);
+});
 
-describe('applib', function() {
+describe('spevents', function() {
 	describe('#unpackEvent', function () {
 		it('should strip msys and *_event wrappers', function (done) {
+			var self = this;
 			var rawevt = testevents[0];
-			var unpacked = appLib.utils.unpackEvent(rawevt);
+			var unpacked = self.spevents.unpackEvent(rawevt);
 			expect(unpacked).to.deep.equal(rawevt.msys.message_event);
 			done();
 		});
@@ -25,8 +27,7 @@ describe('applib', function() {
 
 	describe('#eventIsInteresting', function () {
 		it('should pass only SP_EVENT_TYPES and SP_FBEVENT_TYPES events', function (done) {
-
-			var spy = sinon.spy(appLib.utils, 'eventIsInteresting');
+			var self = this;
 
 			var evt = {
 				msys: {
@@ -35,30 +36,23 @@ describe('applib', function() {
 				}
 			};
 
-			appLib.utils.SP_EVENT_TYPES.forEach(function (evttype) {
+			config.get('sparkPost.eventTypes').forEach(function (evttype) {
 				evt.msys.message_event.type = evttype;
 				if (evttype == 'feedback') {
-					appLib.utils.SP_FBEVENT_TYPES.forEach(function (fbevttype) {
+					config.get('sparkPost.fbEventTypes').forEach(function (fbevttype) {
 						evt.msys.message_event.fbtype = fbevttype;
-						appLib.utils.eventIsInteresting(evt);
-						expect(spy.returnValues[0]).to.be.ok;
-						spy.reset();
+						expect(self.spevents.eventIsInteresting(evt)).to.be.ok;
 					});
 				} else {
-					appLib.utils.eventIsInteresting(evt);
-					expect(spy.returnValues[0]).to.be.ok;
-					spy.reset();
+					expect(self.spevents.eventIsInteresting(evt)).to.be.ok;
 				}
 			});
 
 			evt.msys.message_event.type = '?FEEDB00F!';
-			appLib.utils.eventIsInteresting(evt);
-			expect(spy.returnValues[0]).to.not.be.ok;
-			spy.reset();
+			expect(self.spevents.eventIsInteresting(evt)).to.not.be.ok;
 
 			evt.msys.message_event.fbtype = '?F00DBEEF!';
-			appLib.utils.eventIsInteresting(evt);
-			expect(spy.returnValues[0]).to.not.be.ok;
+			expect(self.spevents.eventIsInteresting(evt)).to.not.be.ok;
 
 			done();
 		});
@@ -81,7 +75,7 @@ describe('applib', function() {
 				tags: ['male', 'fictitious']
 			};
 
-			var result = appLib.utils.formatSPMetadataForSegment(inevt);
+			var result = this.spevents.formatSPMetadataForSegment(inevt);
 			expect(result).to.deep.equal(out);
 			done();
 		});
