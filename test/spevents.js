@@ -11,7 +11,10 @@ var SPEventFilter = require('../lib/spevents');
 var testevents = require('../testevents.json');
 
 beforeEach('Initialise SPEventFilter instance', function () {
-	this.spevents = new SPEventFilter(config);
+	var legacyMode = config.get('legacyMode');
+	var spConfigKey = legacyMode ? 'sparkPostLegacy' : 'sparkPost';
+	this.spConfig = config.get(spConfigKey);
+	this.spevents = new SPEventFilter(this.spConfig);
 });
 
 describe('spevents', function() {
@@ -36,10 +39,10 @@ describe('spevents', function() {
 				}
 			};
 
-			config.get('sparkPost.eventTypes').forEach(function (evttype) {
+			self.spConfig.eventTypes.forEach(function (evttype) {
 				evt.msys.message_event.type = evttype;
 				if (evttype == 'feedback') {
-					config.get('sparkPost.fbEventTypes').forEach(function (fbevttype) {
+					self.config.fbEventTypes.forEach(function (fbevttype) {
 						evt.msys.message_event.fbtype = fbevttype;
 						expect(self.spevents.eventIsInteresting(evt)).to.be.ok;
 					});

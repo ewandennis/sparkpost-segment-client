@@ -1,0 +1,110 @@
+[
+  {
+    "msys": {
+      "message_event": {
+        "msg_size": "3327",
+        "campaign_id": "EventStructureTest",
+        "template_version": "0",
+        "timestamp": "1439285151",
+        "rcpt_tags": [],
+        "friendly_from": "bob@bob.com",
+        "routing_domain": "gmail.com",
+        "msg_from": "bounces-42@sparkpostmail.com",
+        "customer_id": "42",
+        "message_id": "00039fbfc9553742362b",
+        "type": "injection",
+        "transmission_id": "66116333749798512",
+        "template_id": "template_66116333749798512",
+        "rcpt_meta": {},
+        "rcpt_to": "sptest@gmail.com"
+      }
+    },
+    "cust": {
+      "id": "42"
+    }
+  },
+  {
+    "msys": {
+      "track_event": {
+        "rcpt_meta": {},
+        "ip_address": "66.249.93.243",
+        "message_id": "00039fbfc9553742362b",
+        "delv_method": "esmtp",
+        "transmission_id": "66116333749798512",
+        "rcpt_to": "sptest@gmail.com",
+        "customer_id": "42",
+        "campaign_id": "EventStructureTest",
+        "type": "open",
+        "template_version": "0",
+        "user_agent": "Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)",
+        "template_id": "template_66116333749798512",
+        "rcpt_tags": [],
+        "timestamp": "1439285160",
+        "geo_ip": {
+          "country": "FR",
+          "region": "",
+          "city": "",
+          "latitude": 48.86,
+          "longitude": 2.35
+        }
+      }
+    }
+  },
+  {
+    "msys": {
+      "track_event": {
+        "accept_language": "en-US,en;q=0.8,fr;q=0.6",
+        "target_link_url": "http://slashdot.org/",
+        "timestamp": "1439285165",
+        "template_id": "template_66116333749798512",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36",
+        "rcpt_to": "sptest@gmail.com",
+        "campaign_id": "EventStructureTest",
+        "delv_method": "esmtp",
+        "rcpt_meta": {},
+        "rcpt_tags": [],
+        "ip_address": "10.0.0.10",
+        "transmission_id": "66116333749798512",
+        "template_version": "0",
+        "customer_id": "42",
+        "type": "click",
+        "message_id": "00039fbfc9553742362b",
+        "geo_ip": {
+          "country": "GB",
+          "region": "",
+          "city": "",
+          "latitude": 51.5,
+          "longitude": -0.13
+        }
+      }
+    }
+  },
+  {
+    "msys": {
+      "message_event": {
+        "type": "delivery",
+        "template_version": "0",
+        "rcpt_tags": [],
+        "message_id": "00039fbfc9553742362b",
+        "num_retries": "0",
+        "queue_time": "555",
+        "transmission_id": "66116333749798512",
+        "msg_size": "3327",
+        "ip_address": "10.0.0.11",
+        "rcpt_to": "sptest@gmail.com",
+        "template_id": "template_66116333749798512",
+        "campaign_id": "EventStructureTest",
+        "delv_method": "esmtp",
+        "msg_from": "bounces-42@sparkpostmail.com",
+        "timestamp": "1439285151",
+        "customer_id": "42",
+        "routing_domain": "gmail.com",
+        "friendly_from": "bob@bob.com",
+        "rcpt_meta": {}
+      }
+    },
+    "cust": {
+      "id": "42"
+    }
+  }
+]

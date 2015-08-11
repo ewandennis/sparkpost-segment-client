@@ -12,18 +12,33 @@
 			"flushAt": 1
 		}
 	},
-	"sparkPost": {
-		"eventClasses": ["message_event", "track_event"],
-		"eventTypes": ["reception", "delivery", "inband", "out_of_band", "feedback", "open", "click"],
-		"fbEventTypes": ["abuse"],
-		"importantFields": ["rcpt_to", "rcpt_meta", "tags"],
-		"segmentEventTypeMap": {
-		  "delivery": "Email Delivered",
-		  "inband": "Email Bounced",
-		  "out_of_band": "Email Bounced",
-		  "feedback": "Email Marked as Spam",
-		  "open": "Email Opened",
-		  "click": "Email Link Clicked"
-		}
-	}
+	"legacyMode": false,
+  "sparkPost": {
+    "eventClasses": ["message_event", "track_event"],
+    "eventTypes": ["injection", "delivery", "bounce", "out_of_band", "spam_complaint", "open", "click"],
+    "fbEventTypes": ["abuse", "fraud", "virus", "other"],
+    "importantFields": ["rcpt_to", "rcpt_meta", "tags"],
+    "segmentEventTypeMap": {
+      "delivery": "Email Delivered",
+      "bounce": "Email Bounced",
+      "out_of_band": "Email Bounced",
+      "spam_complaint": "Email Marked as Spam",
+      "open": "Email Opened",
+      "click": "Email Link Clicked"
+    }
+  },
+  "sparkPostLegacy": {
+    "eventClasses": ["message_event", "track_event"],
+    "eventTypes": ["reception", "delivery", "inband", "outofband", "feedback", "open", "click"],
+    "fbEventTypes": ["abuse", "fraud", "virus", "other"],
+    "importantFields": ["rcpt_to", "rcpt_meta", "tags"],
+    "segmentEventTypeMap": {
+      "delivery": "Email Delivered",
+      "inband": "Email Bounced",
+      "outofband": "Email Bounced",
+      "feedback": "Email Marked as Spam",
+      "open": "Email Opened",
+      "click": "Email Link Clicked"
+    }
+  }
 }
