@@ -8,20 +8,20 @@ chai.config.includeStack = true;
 
 var SPEventFilter = require('../lib/spevents');
 
-var testevents = require('../testevents.json');
-
 beforeEach('Initialise SPEventFilter instance', function () {
 	var legacyMode = config.get('legacyMode');
 	var spConfigKey = legacyMode ? 'sparkPostLegacy' : 'sparkPost';
 	this.spConfig = config.get(spConfigKey);
 	this.spevents = new SPEventFilter(this.spConfig);
+
+	this.testevents = require( legacyMode ? './testevents1.json' : './testevents1-4.2.json');
 });
 
 describe('spevents', function() {
 	describe('#unpackEvent', function () {
 		it('should strip msys and *_event wrappers', function (done) {
 			var self = this;
-			var rawevt = testevents[0];
+			var rawevt = self.testevents[0];
 			var unpacked = self.spevents.unpackEvent(rawevt);
 			expect(unpacked).to.deep.equal(rawevt.msys.message_event);
 			done();
