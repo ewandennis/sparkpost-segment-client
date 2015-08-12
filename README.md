@@ -16,7 +16,7 @@ This package requires:
 
 ### How It Works
 
-This package is a SparkPost webhooks endpoint - an HTTP service which receives batches of email tracking events from SparkPost.  It translates the events it receives into Segment.com tracking events which can then be fed into Segment's various integrations.  The [Event Mapping][mapping] section describes how that translation takes place.
+This package is a SparkPost webhooks endpoint - an HTTP service which receives batches of email tracking events from SparkPost.  It translates the events it receives into Segment.com tracking events which can then be fed into Segment's various integrations.  The [Event Mapping](#mapping) section describes how that translation takes place.
 
 ### Setup
 
@@ -27,7 +27,7 @@ git clone https://github.com/ewandennis/sparkpost-segment-client.git
 npm install
 ```
 
-Edit config/default.json and set ```segmentAPI.key``` to a [Segment.com write API key](https://segment.com/docs/libraries/http/#authentication).  See the [Configuration section][config] below for more config details.
+Edit config/default.json and set ```segmentAPI.key``` to a [Segment.com write API key](https://segment.com/docs/libraries/http/#authentication).  See the [Configuration section](#config) below for more config details.
 
 Start it up:
 
@@ -39,10 +39,9 @@ You now have a SparkPost webhook endpoint at ```http://YOUR_HOST:3000/api/v1/eve
 
 Finally, register your endpoint with a webhook on your SparkPost account.
 
-Now, when you send emails through SparkPost, you can track them in Segment.  See the [Event Mapping][mapping] section below for details on which events are imported with with what fields.
+Now, when you send emails through SparkPost, you can track them in Segment.  See the [Event Mapping](#mapping) section below for details on which events are imported with with what fields.
 
-[mapping]:
-### SparkPost -> Segment Event Mapping
+### <a name="mapping"></a> SparkPost -> Segment Event Mapping
 
 SparkPost events are translated into Segment events with this mapping:
 
@@ -64,8 +63,7 @@ Segment Field | SparkPost Field(s)
 userId        | rcpt_to
 traits        | rcpt_meta, tags
 
-[config]:
-### Configuration
+### <a name="config"></a> Configuration
 
 The package's configuration is held in config/*.json and uses the [config](https://github.com/lorenwest/node-config) Node.js module.  We use the following config fields:
 
