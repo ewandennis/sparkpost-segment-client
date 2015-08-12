@@ -41,7 +41,7 @@ Finally, register your endpoint with a webhook on your SparkPost account.
 
 Now, when you send emails through SparkPost, you can track them in Segment.  See the [Event Mapping][mapping] section below for details on which events are imported with with what fields.
 
-[mapping]
+[mapping]:
 ### SparkPost -> Segment Event Mapping
 
 SparkPost events are translated into Segment events with this mapping:
@@ -64,7 +64,7 @@ Segment Field | SparkPost Field(s)
 userId        | rcpt_to
 traits        | rcpt_meta, tags
 
-[config]
+[config]:
 ### Configuration
 
 The package's configuration is held in config/*.json and uses the [config](https://github.com/lorenwest/node-config) Node.js module.  We use the following config fields:
