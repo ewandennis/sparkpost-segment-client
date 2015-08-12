@@ -16,7 +16,7 @@ This package requires:
 
 ### How It Works
 
-This package is a SparkPost webhooks endpoint - an HTTP service which receives batches of email tracking events from SparkPost.  It translates the events it receives into Segment.com tracking events which can then be fed into Segment's various integrations.  The [Event Mapping](#mapping) section describes how that translation takes place.
+This package is a SparkPost webhook endpoint - an HTTP service which receives batches of email tracking events from SparkPost.  It translates the events it receives into Segment.com tracking events which can then be fed into Segment's various integrations.  The [Event Mapping](#mapping) section describes how that translation takes place.
 
 ### Setup
 
