@@ -22,14 +22,18 @@ This package presents a SparkPost webhooks endpoint, an HTTP service which recei
 
 Grab the code:
 
-  git clone https://github.com/ewandennis/sparkpost-segment-client.git
-  npm install
+```
+git clone https://github.com/ewandennis/sparkpost-segment-client.git
+npm install
+```
 
 Edit config/default.json and set segmentAPI.key to a Segment.com write API key.  See the Configuration section below for more config details.
 
 Start it up:
 
-  npm run prod
+```
+npm run prod
+```
 
 You now have a SparkPost webhook endpoint at ```http://YOUR_HOST:3000/api/v1/events```.
 
