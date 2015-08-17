@@ -24,6 +24,7 @@ Grab the code:
 
 ```
 git clone https://github.com/ewandennis/sparkpost-segment-client.git
+cd sparkpost-segment-client
 npm install
 ```
 
