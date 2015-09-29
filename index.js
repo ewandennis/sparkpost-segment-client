@@ -23,6 +23,7 @@ ensureIsArray(spConfig, spConfigKey, 'eventClasses');
 ensureIsArray(spConfig, spConfigKey, 'eventTypes');
 ensureIsArray(spConfig, spConfigKey, 'fbEventTypes');
 ensureIsArray(spConfig, spConfigKey, 'importantFields');
+assert(spConfig[spConfigKey].eventTypes.indexOf(spConfig[spConfigKey].complaintEventType) >= 0, 'complaintEventType must be listed in eventTypes');
 assert(typeof spConfig.segmentEventTypeMap == 'object', spConfigKey + '.segmentEventTypeMap must be an object');
 assert(Object.keys(spConfig.segmentEventTypeMap).filter(function (elt) {
   return spConfig.eventTypes.indexOf(elt) < 0;

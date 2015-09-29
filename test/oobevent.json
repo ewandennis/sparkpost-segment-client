@@ -1,0 +1,24 @@
+[
+  {
+    "msys": {
+      "message_event": {
+        "type": "out_of_band",
+        "bounce_class": "1",
+        "campaign_id": "Example Campaign Name",
+        "customer_id": "1",
+        "delv_method": "esmtp",
+        "device_token": "45c19189783f867973f6e6a5cca60061ffe4fa77c547150563a1192fa9847f8a",
+        "error_code": "554",
+        "message_id": "0e0d94b7-9085-4e3c-ab30-e3f2cd9c273e",
+        "msg_from": "sender@example.com",
+        "rcpt_to": "recipient@example.com",
+        "raw_reason": "MAIL REFUSED - IP (17.99.99.99) is in black list",
+        "reason": "MAIL REFUSED - IP (a.b.c.d) is in black list",
+        "routing_domain": "example.com",
+        "template_id": "templ-1234",
+        "template_version": "1",
+        "timestamp": 1427736822
+      }
+    }
+  }
+]

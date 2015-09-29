@@ -87,7 +87,7 @@ TestContext.prototype.initConfig = function() {
 
   this.RECEPTION_EVENT = this.legacyMode ? 'reception' : 'injection';
   this.INBAND_EVENT = this.legacyMode ? 'inband' : 'bounce';
-  this.FEEDBACK_EVENT = this.legacyMode ? 'feedback' : 'spam_complaint';
+  this.FEEDBACK_EVENT = this.spConfig.complaintEventType;
   this.OOB_EVENT = this.legacyMode ? 'outofband' : 'out_of_band';
 
   if (this.legacyMode) {
@@ -100,6 +100,9 @@ TestContext.prototype.initConfig = function() {
     this.TEST_EVENTS_1 = require('./testevents1-4.2.json');
     // Transmission API: reception, tempfail, tempfail, inband
     this.TEST_EVENTS_2 = require('./testevents2-4.2.json');
+
+    this.TEST_EVENTS_1 = this.TEST_EVENTS_1.concat(require('./spamcomplaintevent.json'));
+    this.TEST_EVENTS_1 = this.TEST_EVENTS_1.concat(require('./oobevent.json'));
   }
 };
 
@@ -221,16 +224,16 @@ describe('Segment.com client', function () {
     });
   });
 
-  it.skip('makes 1 segment.track("Email Bounced") call for each received out_of_band event', function (done) {
+  it('makes 1 segment.track("Email Bounced") call for each received out_of_band event', function (done) {
     var self = this;
-    self.cxt.testResponseToEventTypes(self.cxt.TEST_EVENTS_2, [self.cxt.RECEPTION_EVENT, 'delivery', self.cxt.OOB_EVENT], function (resp, err, batch) {
+    self.cxt.testResponseToEventTypes(self.cxt.TEST_EVENTS_1, [self.cxt.RECEPTION_EVENT, 'delivery', self.cxt.OOB_EVENT], function (resp, err, batch) {
       self.cxt.segmentClient.track.should.have.callCount(2);
       expect(self.cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Bounced'}));
       done();
     });
   });
 
-  it.skip('makes 1 segment.track("Email Marked as Spam") call for each received feedback/abuse event', function (done) {
+  it('makes 1 segment.track("Email Marked as Spam") call for each received feedback/abuse event', function (done) {
     var self = this;
     self.cxt.testResponseToEventTypes(self.cxt.TEST_EVENTS_1, [self.cxt.RECEPTION_EVENT, 'delivery', self.cxt.FEEDBACK_EVENT], function (resp, err, batch) {
       expect(self.cxt.segmentClient.track).to.be.calledWith(sinon.match({event: 'Email Marked as Spam'}));

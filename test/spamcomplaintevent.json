@@ -1,0 +1,24 @@
+[
+  {
+    "msys": {
+      "message_event": {
+        "type": "spam_complaint",
+        "campaign_id": "Example Campaign Name",
+        "customer_id": "1",
+        "delv_method": "esmtp",
+        "fbtype": "abuse",
+        "message_id": "0e0d94b7-9085-4e3c-ab30-e3f2cd9c273e",
+        "rcpt_meta": {
+          "customKey": "customValue"
+        },
+        "rcpt_to": "recipient@example.com",
+        "rcpt_type": "cc",
+        "report_by": "server.email.com",
+        "report_to": "abuse.example.com",
+        "template_id": "templ-1234",
+        "timestamp": 1427736822,
+        "user_str": "Additional Example Information"
+      }
+    }
+  }
+]

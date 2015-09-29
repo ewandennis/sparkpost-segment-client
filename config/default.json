@@ -16,6 +16,7 @@
   "sparkPost": {
     "eventClasses": ["message_event", "track_event"],
     "eventTypes": ["injection", "delivery", "bounce", "out_of_band", "spam_complaint", "open", "click"],
+    "complaintEventType": "spam_complaint",
     "fbEventTypes": ["abuse", "fraud", "virus", "other"],
     "importantFields": ["rcpt_to", "rcpt_meta", "tags"],
     "segmentEventTypeMap": {
@@ -30,6 +31,7 @@
   "sparkPostLegacy": {
     "eventClasses": ["message_event", "track_event"],
     "eventTypes": ["reception", "delivery", "inband", "outofband", "feedback", "open", "click"],
+    "complaintEventType": "feedback",
     "fbEventTypes": ["abuse", "fraud", "virus", "other"],
     "importantFields": ["rcpt_to", "rcpt_meta", "tags"],
     "segmentEventTypeMap": {

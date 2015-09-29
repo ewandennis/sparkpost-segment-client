@@ -15,6 +15,9 @@ beforeEach('Initialise SPEventFilter instance', function () {
 	this.spevents = new SPEventFilter(this.spConfig);
 
 	this.testevents = require( legacyMode ? './testevents1.json' : './testevents1-4.2.json');
+	if (!legacyMode) {
+		this.testevents = this.testevents.concat(require('./spamcomplaintevent.json'));
+	}
 });
 
 describe('spevents', function() {
@@ -41,8 +44,8 @@ describe('spevents', function() {
 
 			self.spConfig.eventTypes.forEach(function (evttype) {
 				evt.msys.message_event.type = evttype;
-				if (evttype == 'feedback') {
-					self.config.fbEventTypes.forEach(function (fbevttype) {
+				if (evttype == self.spConfig.complaintEventType) {
+					self.spConfig.fbEventTypes.forEach(function (fbevttype) {
 						evt.msys.message_event.fbtype = fbevttype;
 						expect(self.spevents.eventIsInteresting(evt)).to.be.ok;
 					});
