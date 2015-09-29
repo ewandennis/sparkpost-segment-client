@@ -360,7 +360,7 @@ describe('Segment.com client', function () {
       self.cxt.load.flushSegmentCache(function (err, batch) {
         assert(err == null, 'Segment.flush failed: ' + err);
         expect(self.cxt.segmentClient.track).to.be.calledWith(sinon.match({
-          properties: {
+          context: {
             traits: {
               userId: userId
             }
