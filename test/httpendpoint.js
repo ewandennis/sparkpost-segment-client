@@ -338,5 +338,27 @@ describe('Segment.com client', function () {
       done();
     });
   });
+
+  it('passes rcpt_meta.userId through to Segment as userId', function(done) {
+    var self = this
+      , userId = 'xQx101'
+      , evt = _.cloneDeep(this.cxt.TEST_EVENTS_1[3]);
+
+    evt.msys.message_event.rcpt_meta.userId = userId;
+
+    self.cxt.callWebhookEndpoint([evt], function(resp) {
+      self.cxt.load.flushSegmentCache(function (err, batch) {
+        assert(err == null, 'Segment.flush failed: ' + err);
+        expect(self.cxt.segmentClient.track).to.be.calledWith(sinon.match({
+          properties: {
+            traits: {
+              userId: userId
+            }
+          }
+        }));
+        done();
+      });
+    });
+  });
 });
 
