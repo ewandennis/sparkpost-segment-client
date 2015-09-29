@@ -120,6 +120,17 @@ TestContext.prototype.callWebhookEndpoint = function (events, next) {
   }).on('response', next);
 };
 
+function typeForEvent(evt) {
+  if (evt.msys.message_event) {
+    return evt.msys.message_event.type;
+  } else if (evt.msys.track_event) {
+    return evt.msys.track_event.type;
+  } else if (evt.msys.gen_event) {
+    return evt.msys.gen_event.type;
+  }
+  return null;
+}
+
 // Call the app server's webhook endpoint and return the HTTP resposne for testing
 TestContext.prototype.testResponseToEventTypes = function (eventset, evtTypes, next) {
   var self = this;
@@ -131,14 +142,9 @@ TestContext.prototype.testResponseToEventTypes = function (eventset, evtTypes, n
   } else {
     // assumption: evtTypes is an array of strings
     events = eventset.filter(function (elt) {
-      var type;
-      if (elt.msys.message_event) {
-        type = elt.msys.message_event.type;
-      } else if (elt.msys.track_event) {
-        type = elt.msys.track_event.type;
-      } else if (elt.msys.gen_event) {
-        type = elt.msys.gen_event.type;
-      } else {
+      var type = typeForEvent(elt);
+      console.log('type == ' + type);
+      if (type == null) {
         console.warn('Unexpected event class: ' + JSON.stringify(Object.keys(elt.msys)));
         return false;
       }
@@ -153,6 +159,10 @@ TestContext.prototype.testResponseToEventTypes = function (eventset, evtTypes, n
     });
   });
 };
+
+function pickFirstEventOfType(events, type) {
+  return events.filter(function(elt) { return typeForEvent(elt) == type; })[0];
+}
 
 // ----------------------------------------------------------------------------
 
@@ -358,6 +368,17 @@ describe('Segment.com client', function () {
         }));
         done();
       });
+    });
+  });
+
+  it('passes email address as anonymousId in identify events in absence of rcpt_meta.userId', function(done) {
+    var self = this
+      , reception = pickFirstEventOfType(self.cxt.TEST_EVENTS_1, self.cxt.RECEPTION_EVENT);
+    self.cxt.testResponseToEventTypes([reception], self.cxt.RECEPTION_EVENT, function (resp, err, batch) {
+      expect(self.cxt.segmentClient.identify).to.be.calledWith(sinon.match({
+        anonymousId: reception.msys.message_event.rcpt_to
+      }));
+      done();
     });
   });
 });
